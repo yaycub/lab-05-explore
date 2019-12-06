@@ -34,4 +34,17 @@ describe('app routes tests', () => {
         });
       });
   });
+
+  it('can update a single car by Id', () => {
+    return request(app)
+      .put('/cars/5deae1c6b5af1bd5e8914e50')
+      .send({
+        make: 'Nissan'
+      })
+      .then(response => {
+        expect(response.body).toEqual({
+          '__v': 0, '_id': '5deae1c6b5af1bd5e8914e50', 'make': 'Nissan', 'model': 'Camry', 'year': 2018
+        });
+      });
+  });
 });
