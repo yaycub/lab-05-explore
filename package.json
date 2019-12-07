@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --runInBand",
-    "test:watch": "npm run test -- --watchAll --coverage",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "npm run test -- --watchAll",
     "lint": "eslint '**/*.js'"
   },
   "jest": {
