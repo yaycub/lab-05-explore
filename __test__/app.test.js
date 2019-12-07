@@ -8,8 +8,8 @@ describe('app routes tests', () => {
   beforeAll(() => {
     connect();
   });
-  afterAll(() => {
-    return mongoose.connection.db.dropDatabase();
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
   });
   afterAll(() => {
     return mongoose.connection.close();
