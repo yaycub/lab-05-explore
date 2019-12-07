@@ -4,17 +4,15 @@ const mongoose = require('mongoose');
 const app = require('../lib/app');
 const car = require('../lib/model/Car');
 
-describe('app routes tests', () => {
-  beforeAll(done => {
+describe('app routes tests', async() => {
+  beforeAll(() => {
     connect();
-    done();
   });
   beforeEach(() => {
-    mongoose.connection.dropDatabase();
+    return mongoose.connection.dropDatabase();
   });
-  afterAll(done => {
-    mongoose.connection.close();
-    done();
+  afterAll(() => {
+    return mongoose.connection.close();
   });
 
   it('can get all cars from a cars route', async() => {
