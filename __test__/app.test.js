@@ -1,11 +1,18 @@
 const request = require('supertest');
+const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const app = require('../lib/app');
 const car = require('../lib/model/Car');
 
 describe('app routes tests', () => {
+  beforeAll(() => {
+    connect();
+  });
   afterAll(() => {
     return mongoose.connection.db.dropDatabase();
+  });
+  afterAll(() => {
+    return mongoose.connection.close();
   });
 
   it('can get all cars from a cars route', async() => {
