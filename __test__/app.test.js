@@ -1,14 +1,23 @@
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../lib/app');
+const car = require('../lib/model/Car');
 
 describe('app routes tests', () => {
-  it('can get all cars from a cars route', () => {
+  afterAll(() => {
+    return mongoose.connection.db.dropDatabase();
+  });
+
+  it('can get all cars from a cars route', async() => {
+    const responseCarId = await car.create({
+      make: 'Toyota',
+      model: 'Camry',
+      year: '2018'
+    }).then(result => result._id);
     return request(app)
       .get('/cars')
       .then(response => {
-        expect(response.body).toContainEqual({
-          '__v': 0, '_id': '5deae0ad8dde6ad4ab0354bc', 'make': 'Toyota', 'model': 'Camry', 'year': 2018
-        });
+        expect(JSON.stringify(response.body)).toEqual(`[{"_id":"${responseCarId}","make":"Toyota","model":"Camry","year":2018,"__v":0}]`);
       });
   });
 
@@ -21,30 +30,49 @@ describe('app routes tests', () => {
         year: '2018'
       })
       .then(response => {
-        expect(response.text).toEqual('Car saved');
+        expect(JSON.parse(response.text)).toEqual({ 'make': 'Toyota', 'model': 'Camry', 'year': '2018' });
       });
   });
 
-  it('can get a single car by ID', () => {
+  it('can get a single car by ID', async() => {
+    const responseCarId = await car.create({
+      make: 'Toyota',
+      model: 'Camry',
+      year: '2018'
+    }).then(result => result._id);
     return request(app)
-      .get('/cars/5deae0ad8dde6ad4ab0354bc')
+      .get(`/cars/${responseCarId}`)
       .then(response => {
-        expect(response.body).toEqual({
-          '__v': 0, '_id': '5deae0ad8dde6ad4ab0354bc', 'make': 'Toyota', 'model': 'Camry', 'year': 2018
-        });
+        expect(JSON.stringify(response.body)).toEqual(`{"_id":"${responseCarId}","make":"Toyota","model":"Camry","year":2018,"__v":0}`);
       });
   });
 
-  it('can update a single car by Id', () => {
+  it('can update a single car by Id', async() => {
+    const responseCarId = await car.create({
+      make: 'Toyota',
+      model: 'Camry',
+      year: '2018'
+    }).then(result => result._id);
     return request(app)
-      .put('/cars/5deae1c6b5af1bd5e8914e50')
+      .put(`/cars/${responseCarId}`)
       .send({
         make: 'Nissan'
       })
       .then(response => {
-        expect(response.body).toEqual({
-          '__v': 0, '_id': '5deae1c6b5af1bd5e8914e50', 'make': 'Nissan', 'model': 'Camry', 'year': 2018
-        });
+        expect(JSON.stringify(response.body)).toEqual(`{"_id":"${responseCarId}","make":"Nissan","model":"Camry","year":2018,"__v":0}`);
+      });
+  });
+
+  it('can find an car by ID and delete that car', async() => {
+    const responseCarId = await car.create({
+      make: 'Toyota',
+      model: 'Camry',
+      year: '2018'
+    }).then(result => result._id);
+    return request(app)
+      .delete(`/cars/${responseCarId}`)
+      .then(response => {
+        expect(JSON.stringify(response.body)).toEqual(`{"_id":"${responseCarId}","make":"Toyota","model":"Camry","year":2018,"__v":0}`);
       });
   });
 });
