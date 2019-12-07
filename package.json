@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
-    "test:watch": "npm run test -- --watchAll --coverage",
+    "test:watch": "npm run test -- --watchAll --coverage --detectOpenHandles",
     "lint": "eslint '**/*.js'"
   },
   "jest": {
