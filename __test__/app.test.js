@@ -10,7 +10,7 @@ describe('app routes tests', () => {
     done();
   });
   beforeEach(() => {
-    return mongoose.connection.dropDatabase();
+    mongoose.connection.dropDatabase();
   });
   afterAll(done => {
     mongoose.connection.close();
