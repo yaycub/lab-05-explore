@@ -8,11 +8,11 @@ describe('app routes tests', () => {
   beforeAll(() => {
     connect();
   });
-  beforeEach(() => {
-    return mongoose.connection.dropDatabase();
+  beforeEach(async() => {
+    await mongoose.connection.dropDatabase();
   });
-  afterAll(() => {
-    return mongoose.connection.close();
+  afterAll(async() => {
+    await mongoose.connection.close();
   });
 
   it('can get all cars from a cars route', async() => {
