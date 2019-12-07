@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = require('../lib/app');
 const car = require('../lib/model/Car');
 
-describe('app routes tests', async() => {
+describe('app routes tests', () => {
   beforeAll(() => {
     connect();
   });
